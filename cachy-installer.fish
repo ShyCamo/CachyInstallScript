@@ -1,5 +1,9 @@
 #!/bin/fish
-echo "Starting post-install script..."
+echo "Note: This script will stop every 10 seconds after a step has been completed to allow for verification that everything worked."
+sleep 2
+echo "Starting script..."
+cd ~
+sudo pacman -Syu && paru -Syu
 echo "🎮 Verifying NVIDIA Driver..."
 if not nvidia-smi
     echo "Installing NVIDIA drivers..."
@@ -40,19 +44,15 @@ systemctl --user enable syncthing
 systemctl --user start syncthing
 echo "Please open http://localhost:8384 to link your Steam Deck device."
 
-echo "🛞 Installing Thrustmaster T128 driver..."
-git clone https://github.com/Thrustmaster/hid-tmff2.git
+echo "Attempting to build drivers for Thrustmaster wheel..."
+git clone https://github.com/https://github.com/Kimplul/hid-tmff2/
 cd hid-tmff2
 make
 sudo make install
-
-echo "🔧 Enabling DKMS support for Thrustmaster T128..."
 sudo dkms add .
 sudo dkms build hid-tmff2/1.0
 sudo dkms install hid-tmff2/1.0
 dkms status
-cd ..
-echo "Main software and drivers installed."
 cd ~
 
 sleep 2
@@ -75,6 +75,18 @@ echo "
 4. Watch this video (https:www.youtube.com/watch?v=Oqla04P_2QA) to see the process for getting a HP Reverb working since 24H2 doesn't work with WMR anymore.
 
 5. Open http://localhost:8384 for Syncthing to link your Steam Deck folders to your PC for emulation save files.
+
+6. If it failed, build the software for your Thrustmaster wheel from source manually:
+git clone https://github.com/https://github.com/Kimplul/hid-tmff2/
+cd hid-tmff2
+make
+sudo make install
+sudo dkms add .
+sudo dkms build hid-tmff2/1.0
+sudo dkms install hid-tmff2/1.0
+dkms status
+cd ..
+
 " > checklist.txt
 cd ~
 sleep 1
