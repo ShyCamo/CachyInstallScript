@@ -1,5 +1,5 @@
 #!/bin/fish
-echo "Note: This script will stop every 10 seconds after a step has been completed to allow for verification that everything worked."
+echo "Note: This script will stop for 20 seconds after all steps have been completed to allow for verification that everything worked."
 sleep 2
 echo "Starting script..."
 cd ~
@@ -27,7 +27,7 @@ echo "✅ NVIDIA setup done. Please reboot for changes to take effect."
 
 sleep 2
 echo "📦 Installing essential software..."
-sudo pacman -S --noconfirm dolphin dolphin-emu steam wine wine-gecko wine-mono obs-studio citra gimp flatpak discover cmake make dkms linux-cachyos-headers git vscode audacity
+sudo pacman -S --noconfirm dolphin-emu steam wine wine-gecko wine-mono obs-studio gimp flatpak discover cmake make dkms linux-cachyos-headers git vscode audacity
 
 echo "🔗 Enabling Flathub..."
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
@@ -36,7 +36,7 @@ echo "🔑 Adding Firefox Nightly key..."
 gpg --keyserver hkps://keys.openpgp.org --recv-keys 14F26682D0916CDD81E37B6D61B7B526D98F0353
 
 echo "⬇️ Installing AUR apps..."
-paru -S --noconfirm firefox-nightly minecraft-launcher jre17-openjdk lutris ryujinx-bin discord spotify streamdeck-ui oversteer winegui
+paru -S --noconfirm firefox-nightly minecraft-launcher jre17-openjdk lutris ryujinx discord spotify streamdeck-ui oversteer winegui azahar
 
 echo "🔄 Setting up Syncthing..."
 sudo pacman -S --noconfirm syncthing
@@ -61,7 +61,13 @@ echo "alias cleanup='set orphans (pacman -Qdtq); and sudo pacman -Rns \$orphans;
 echo "alias update='sudo pacman -Syu && paru -Syu'" >> ~/.config/fish/config.fish
 echo "Aliases added to Fish shell."
 sleep 2
-clear
+echo ""
+echo ""
+echo ""
+echo ""
+echo ""
+echo ""
+echo ""
 echo "✅ Automated post-install script completed."
 sleep 1
 cd ~/Desktop/ && touch checklist.txt
