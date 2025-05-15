@@ -1,6 +1,4 @@
 #!/bin/fish
-echo "Note: This script will stop for 20 seconds after all steps have been completed to allow for verification that everything worked."
-sleep 2
 echo "Starting script..."
 cd ~
 sudo pacman -Syu && paru -Syu
@@ -28,6 +26,7 @@ echo "✅ NVIDIA setup done. Please reboot for changes to take effect."
 sleep 2
 echo "📦 Installing essential software..."
 sudo pacman -S --noconfirm dolphin-emu steam wine wine-gecko wine-mono obs-studio gimp flatpak discover cmake make dkms linux-cachyos-headers git vscode audacity
+sudo pacman -R Firefox
 
 echo "🔗 Enabling Flathub..."
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
