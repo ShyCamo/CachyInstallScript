@@ -26,7 +26,6 @@ echo "✅ NVIDIA setup done. Please reboot for changes to take effect."
 sleep 2
 echo "📦 Installing essential software..."
 sudo pacman -S --noconfirm dolphin-emu steam wine wine-gecko wine-mono obs-studio gimp flatpak discover cmake make dkms linux-cachyos-headers git vscode audacity
-sudo pacman -R Firefox
 
 echo "🔗 Enabling Flathub..."
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
@@ -35,24 +34,13 @@ echo "🔑 Adding Firefox Nightly key..."
 gpg --keyserver hkps://keys.openpgp.org --recv-keys 14F26682D0916CDD81E37B6D61B7B526D98F0353
 
 echo "⬇️ Installing AUR apps..."
-paru -S --noconfirm firefox-nightly-bin minecraft-launcher jre17-openjdk lutris ryujinx discord spotify streamdeck-ui oversteer winegui azahar
+paru -S --noconfirm firefox-nightly-bin minecraft-launcher jre17-openjdk lutris ryujinx discord spotify streamdeck-ui oversteer winegui azahar hid-tmff2-dkms-git
 
 echo "🔄 Setting up Syncthing..."
 sudo pacman -S --noconfirm syncthing
 systemctl --user enable syncthing
 systemctl --user start syncthing
 echo "Please open http://localhost:8384 to link your Steam Deck device."
-
-echo "Attempting to build drivers for Thrustmaster wheel..."
-git clone https://github.com/https://github.com/Kimplul/hid-tmff2/
-cd hid-tmff2
-make
-sudo make install
-sudo dkms add .
-sudo dkms build hid-tmff2/1.0
-sudo dkms install hid-tmff2/1.0
-dkms status
-cd ~
 
 sleep 2
 echo "🐚 Adding fish aliases..."
@@ -80,17 +68,6 @@ echo "
 4. Watch this video (https:www.youtube.com/watch?v=Oqla04P_2QA) to see the process for getting a HP Reverb working since 24H2 doesn't work with WMR anymore.
 
 5. Open http://localhost:8384 for Syncthing to link your Steam Deck folders to your PC for emulation save files.
-
-6. If it failed, build the software for your Thrustmaster wheel from source manually:
-git clone https://github.com/https://github.com/Kimplul/hid-tmff2/
-cd hid-tmff2
-make
-sudo make install
-sudo dkms add .
-sudo dkms build hid-tmff2/1.0
-sudo dkms install hid-tmff2/1.0
-dkms status
-cd ..
 
 " > checklist.txt
 cd ~
