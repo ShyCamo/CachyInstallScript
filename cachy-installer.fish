@@ -1,31 +1,32 @@
 #!/bin/fish
 echo "Starting script..."
 cd ~
-sudo pacman -Syu && paru -Syu
+sudo su
+pacman -Syu --noconfirm && paru -Syu --noconfirm
 echo "🎮 Verifying NVIDIA Driver..."
 if not nvidia-smi
     echo "Installing NVIDIA drivers..."
-    sudo pacman -S --noconfirm nvidia nvidia-utils nvidia-settings
+    pacman -S --noconfirm nvidia nvidia-utils nvidia-settings
 end
 echo "NVIDIA drivers verified."
 
 sleep 2
 echo "🛠 Enabling KMS for Wayland..."
 sleep 1
-echo "options nvidia_drm modeset=1" | sudo tee /etc/modprobe.d/nvidia.conf
-sudo mkinitcpio -P
+echo "options nvidia_drm modeset=1" | tee /etc/modprobe.d/nvidia.conf
+mkinitcpio -P
 echo "KMS for Wayland enabled."
 
 sleep 2
 echo "📂 Editing GRUB config..."
 sleep 1
-sudo sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="[^"]*/& nvidia_drm.modeset=1/' /etc/default/grub
-sudo grub-mkconfig -o /boot/grub/grub.cfg
+sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="[^"]*/& nvidia_drm.modeset=1/' /etc/default/grub
+grub-mkconfig -o /boot/grub/grub.cfg
 echo "✅ NVIDIA setup done. Please reboot for changes to take effect."
 
 sleep 2
 echo "📦 Installing essential software..."
-sudo pacman -S --noconfirm dolphin-emu steam wine wine-gecko wine-mono obs-studio gimp flatpak discover cmake make dkms linux-cachyos-headers git vscode audacity
+pacman -S --noconfirm steam wine wine-gecko wine-mono obs-studio gimp flatpak discover cmake make dkms linux-cachyos-headers git vscode audacity vlc syncthing
 
 echo "🔗 Enabling Flathub..."
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
@@ -37,14 +38,13 @@ echo "⬇️ Installing AUR apps..."
 paru -S --noconfirm firefox-nightly-bin minecraft-launcher jre17-openjdk lutris ryujinx discord spotify streamdeck-ui oversteer winegui azahar hid-tmff2-dkms-git
 
 echo "🔄 Setting up Syncthing..."
-sudo pacman -S --noconfirm syncthing
 systemctl --user enable syncthing
 systemctl --user start syncthing
 echo "Please open http://localhost:8384 to link your Steam Deck device."
 
 sleep 2
 echo "🐚 Adding fish aliases..."
-echo "alias cleanup='set orphans (pacman -Qdtq); and sudo pacman -Rns \$orphans; or echo "No unused dependencies to remove."'" >> ~/.config/fish/config.fish
+echo "alias cleanup='set orphans (pacman -Qdtq); and sudo pacman -Rns \$orphans && paru -Scc; or echo "No unused dependencies/cached build files to remove."'" >> ~/.config/fish/config.fish
 echo "alias update='sudo pacman -Syu && paru -Syu'" >> ~/.config/fish/config.fish
 echo "Aliases added to Fish shell."
 sleep 2
