@@ -2,7 +2,7 @@
 echo "Starting script..."
 cd ~
 sudo su
-pacman -Syu --noconfirm && paru -Syu --noconfirm
+pacman -Syu && paru -Syu
 echo "🎮 Verifying NVIDIA Driver..."
 if not nvidia-smi
     echo "Installing NVIDIA drivers..."
@@ -26,7 +26,7 @@ echo "✅ NVIDIA setup done. Please reboot for changes to take effect."
 
 sleep 2
 echo "📦 Installing essential software..."
-pacman -S --noconfirm steam wine wine-gecko wine-mono obs-studio gimp flatpak discover cmake make dkms linux-cachyos-headers git vscode audacity vlc syncthing
+pacman -S --noconfirm steam wine wine-gecko wine-mono obs-studio gimp flatpak discover cmake make dkms linux-cachyos-headers git vscode audacity vlc syncthing ncdu
 
 echo "🔗 Enabling Flathub..."
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
@@ -44,9 +44,10 @@ echo "Please open http://localhost:8384 to link your Steam Deck device."
 
 sleep 2
 echo "🐚 Adding fish aliases..."
-echo "alias cleanup='set orphans (pacman -Qdtq); and sudo pacman -Rns \$orphans && paru -Scc; or echo "No unused dependencies/cached build files to remove."'" >> ~/.config/fish/config.fish
+echo "alias cleanup='set orphans (pacman -Qdtq); and sudo pacman -Rns \$orphans && paru -Scc && flatpak uninstall --unused; or echo "No unused dependencies/cached build files to remove."'" >> ~/.config/fish/config.fish
 echo "alias update='sudo pacman -Syu && paru -Syu'" >> ~/.config/fish/config.fish
-echo "Aliases added to Fish shell."
+echo "alias debloat='ncdu / --exclude /media --exclude /run/timeshift'" >> ~/.config/fish/config.fish
+echo "Aliases 'cleanup', 'update' and 'debloat' added to Fish shell."
 sleep 2
 echo ""
 echo ""
@@ -61,11 +62,11 @@ cd ~/Desktop/ && touch checklist.txt
 echo "
 1. Download the files for the camera software from your personal MEGA account. Build instructions should be available from the GitHub link in your private Discord server. Failing that, run it through VSCode like on your MacBook.
 
-2. Download the files for RVC WebUI from the DMs of Gangsta and ask him how to build it.
+2. Download the files for RVC WebUI from the Gangsta's DMs and ask him how to build it.
 
 3. Run sudo nano /usr/share/cachyos-fish-config/cachyos-config.fish (open this in a new terminal window) and look for any lines mentioning fastfetch then remove them to prevent fastfetch running every time you open the terminal.
 
-4. Watch this video (https:www.youtube.com/watch?v=Oqla04P_2QA) to see the process for getting a HP Reverb working since 24H2 doesn't work with WMR anymore.
+4. Watch this video (https://www.youtube.com/watch?v=Oqla04P_2QA) to see the process for getting dad's HP Reverb working since 24H2 doesn't work with WMR anymore.
 
 5. Open http://localhost:8384 for Syncthing to link your Steam Deck folders to your PC for emulation save files.
 
