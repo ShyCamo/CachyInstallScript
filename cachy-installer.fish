@@ -1,13 +1,9 @@
 #!/bin/fish
 echo "Starting script..."
-sudo -v
-while true
-    sudo -n true
-end &
-set -l keepalive_pid $last_pid
+echo "You will be asked for your password again when Paru begins installing apps so pay some attention."
 cd ~
+sleep 3
 
-sudo pacman -Syu && paru -Syu
 clear
 echo "🎮 Installing NVIDIA drivers..."
 sudo pacman -S nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings linux-cachyos-headers
@@ -16,7 +12,6 @@ nvidia-smi
 echo "NVIDIA drivers verified."
 sleep 2
 
-clear
 echo "🛠 Enabling KMS for Wayland..."
 sleep 1
 echo "options nvidia_drm modeset=1" | sudo tee /etc/modprobe.d/nvidia.conf
@@ -24,7 +19,6 @@ sudo mkinitcpio -P
 echo "KMS for Wayland enabled."
 sleep 2
 
-clear
 echo "📂 Editing GRUB config..."
 sleep 1
 sudo sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="[^"]*/& nvidia_drm.modeset=1/' /etc/default/grub
@@ -52,26 +46,22 @@ echo "Please open http://localhost:8384 to link your Steam Deck device."
 sleep 2
 
 clear
-echo "Removing unwanted packages..."
-sudo pacman -R alacritty micro cachyos-micro-settings haruna meld
-
-clear
 echo "🐚 Adding fish aliases..."
 echo "alias cleanup='set orphans (pacman -Qdtq); and sudo pacman -Rns \$orphans && paru -Scc && flatpak uninstall --unused; or echo "No unused dependencies/cached build files to remove."'" >> ~/.config/fish/config.fish
 echo "alias update='sudo pacman -Syu && paru -Syu'" >> ~/.config/fish/config.fish
 echo "alias debloat='ncdu / --exclude /media --exclude /run/timeshift'" >> ~/.config/fish/config.fish
 echo "Aliases 'cleanup', 'update' and 'debloat' added to Fish shell."
 sleep 2
-echo ""
-echo ""
-echo ""
-echo ""
-echo ""
-echo ""
-echo ""
+
+clear
+echo "Removing unwanted packages..."
+sudo pacman -R alacritty micro cachyos-micro-settings haruna meld
+cleanup
+sleep 2
+
+clear
 echo "✅ Automated post-install script completed."
 sleep 1
-kill $keepalive_pid
 cd ~/Desktop/ && touch checklist.txt
 echo "
 1. Download the files for the camera software from your personal MEGA account. Build instructions should be available from the GitHub link in your private Discord server. Failing that, run it through VSCode like on your MacBook.
@@ -87,6 +77,7 @@ echo "
 " > checklist.txt
 cd ~
 sleep 1
+echo ""
 echo "Manual steps have been placed into a checklist text file on your desktop for you to look back over and 
 complete yourself as the script cannot do these."
 sleep 2
