@@ -3,10 +3,10 @@ echo "Starting script..."
 sudo -v
 while true
     sudo -n true
-    sleep 60
 end &
 set -l keepalive_pid $last_pid
 cd ~
+
 sudo pacman -Syu && paru -Syu
 clear
 echo "🎮 Installing NVIDIA drivers..."
