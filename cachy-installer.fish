@@ -49,8 +49,13 @@ echo "🔄 Setting up Syncthing..."
 systemctl --user enable syncthing
 systemctl --user start syncthing
 echo "Please open http://localhost:8384 to link your Steam Deck device."
-
 sleep 2
+
+clear
+echo "Removing unwanted packages..."
+sudo pacman -R alacritty micro cachyos-micro-settings haruna meld
+
+clear
 echo "🐚 Adding fish aliases..."
 echo "alias cleanup='set orphans (pacman -Qdtq); and sudo pacman -Rns \$orphans && paru -Scc && flatpak uninstall --unused; or echo "No unused dependencies/cached build files to remove."'" >> ~/.config/fish/config.fish
 echo "alias update='sudo pacman -Syu && paru -Syu'" >> ~/.config/fish/config.fish
@@ -83,7 +88,7 @@ echo "
 cd ~
 sleep 1
 echo "Manual steps have been placed into a checklist text file on your desktop for you to look back over and 
-complete yourself as the script cannot."
+complete yourself as the script cannot do these."
 sleep 2
 function prompt_reboot
     read -l -P "🎯 Do you want to reboot now? (Y/N): " answer
