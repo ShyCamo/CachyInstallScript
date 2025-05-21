@@ -50,8 +50,8 @@ echo "📦 Installing VTube Studio with Proton-GE..."
 
 # 1. Create directories
 cd ~
-mkdir -p ~/.proton-ge 
-mkdir -p ~/.vtubestudio-proton 
+mkdir -p ~/.proton-ge
+mkdir -p ~/.vtubestudio-proton
 mkdir -p ~/Games/VTubeStudio
 
 # 2. Download and extract latest Proton-GE (edit version as needed)
@@ -66,26 +66,34 @@ echo "Waiting for confirmation to continue..."
 read -p "Press enter once VTubeStudio.exe is inside ~/Games/VTubeStudio..."
 
 # 4. Create launcher script
-cat << 'EOF' > ~/Games/run-vtubestudio.sh
-#!/bin/fish
-export STEAM_COMPAT_DATA_PATH="$HOME/.vtubestudio-proton"
-"$HOME/.proton-ge/GE-Proton8-27/proton" run "$HOME/Games/VTubeStudio/VTubeStudio.exe"
-EOF
+set LAUNCHER_DIR "$HOME/.local/share/applications"
+set FILE "$LAUNCHER_DIR/vtubestudio.desktop"
+
+echo '[Desktop Entry]
+Name=VTube Studio
+Exec=$HOME/Games/run-vtubestudio.sh
+Path=$HOME/Games/VTubeStudio
+Terminal=false
+Type=Application
+Icon=$HOME/Icons/vtubestudio.png
+Categories=AudioVideo;' > $FILE
 
 chmod +x ~/Games/run-vtubestudio.sh
 
 # 5. Create .desktop entry
-mkdir -p ~/.local/share/applications
-cat << EOF > ~/.local/share/applications/vtubestudio.desktop
-[Desktop Entry]
+set LAUNCHER_DIR "$HOME/.local/share/applications"
+mkdir -p $LAUNCHER_DIR
+
+set FILE "$LAUNCHER_DIR/vtubestudio.desktop"
+
+echo '[Desktop Entry]
 Name=VTube Studio
-Exec=$HOME/Games/run-vtubestudio.sh
+Exec='$HOME'/Games/run-vtubestudio.sh
 Type=Application
 Comment=Run VTube Studio standalone with Proton-GE
 Icon=face-smile
 Categories=Graphics;
-Terminal=false
-EOF
+Terminal=false' > $FILE
 
 echo "✅ VTube Studio setup complete. It will appear in your application launcher."
 sleep 2
@@ -93,15 +101,9 @@ sleep 2
 clear
 echo "🔧 Starting setup for Deep-Live-Cam, RVC WebUI, and RVC-GUI..."
 
-INSTALL_DIR="$HOME/Downloads/CachyInstallScript"
-RVC_WEBUI_ARCHIVE="$INSTALL_DIR/RVC-WebUI.tar.gz"
-RVC_GUI_ARCHIVE="$INSTALL_DIR/RVC-GUI.tar.gz"
-
-# Ensure the installation directory exists
-if [ ! -d "$INSTALL_DIR" ]; then
-    echo "❌ Installation directory not found: $INSTALL_DIR"
-    exit 1
-fi
+set INSTALL_DIR "$HOME/Downloads/CachyInstallScript"
+set RVC_WEBUI_ARCHIVE "$INSTALL_DIR/RVC-WebUI.tar.gz"
+set RVC_GUI_ARCHIVE "$INSTALL_DIR/RVC-GUI.tar.gz"
 
 # Create target directories
 mkdir -p "$HOME/Applications/RVC-WebUI"
@@ -110,78 +112,67 @@ mkdir -p "$HOME/Applications/RVC-GUI"
 
 # 1. Setup RVC WebUI
 echo "📦 Setting up RVC WebUI..."
-if [ -f "$RVC_WEBUI_ARCHIVE" ]; then
-    tar -xzf "$RVC_WEBUI_ARCHIVE" -C "$HOME/Applications/RVC-WebUI" --strip-components=1
-    cd "$HOME/Applications/RVC-WebUI" || exit
+tar -xzf "$RVC_WEBUI_ARCHIVE" -C "$HOME/Applications/RVC-WebUI" --strip-components=1
+cd "$HOME/Applications/RVC-WebUI" || exit
 
-    # Install Python dependencies
-    python3 -m venv venv
-    source venv/bin/activate
-    pip install --upgrade pip
-    pip install -r requirements.txt
+# Install Python dependencies
+python3 -m venv venv
+source venv/bin/activate
+python3 -m ensurepip --upgrade
+python3 -m pip install --upgrade pip
+python3 -m pip install -r requirements.txt
 
-    # Optional: Create a launcher script
-    echo -e "#!/bin/fish\nsource $HOME/Applications/RVC-WebUI/venv/bin/activate\npython infer-web.py" > "$HOME/Applications/RVC-WebUI/start.sh"
-    chmod +x "$HOME/Applications/RVC-WebUI/start.sh"
+# Optional: Create a launcher script
+echo -e "#!/bin/fish\nsource $HOME/Applications/RVC-WebUI/venv/bin/activate\npython infer-web.py" > "$HOME/Applications/RVC-WebUI/start.sh"
+chmod +x "$HOME/Applications/RVC-WebUI/start.sh"
 
-    deactivate
-else
-    echo "❌ RVC WebUI archive not found: $RVC_WEBUI_ARCHIVE"
-fi
+deactivate
 
 # 2. Setup RVC-GUI
 echo "📦 Setting up RVC-GUI..."
-if [ -f "$RVC_GUI_ARCHIVE" ]; then
-    tar -xzf "$RVC_GUI_ARCHIVE" -C "$HOME/Applications/RVC-GUI" --strip-components=1
-    cd "$HOME/Applications/RVC-GUI" || exit
+tar -xzf "$RVC_GUI_ARCHIVE" -C "$HOME/Applications/RVC-GUI" --strip-components=1
+cd "$HOME/Applications/RVC-GUI" || exit
 
-    # Install Python dependencies
-    python3 -m venv venv
-    source venv/bin/activate
-    pip install --upgrade pip
-    pip install -r requirements.txt
+# Install Python dependencies
+python3 -m venv venv
+source venv/bin/activate
+python3 -m pip install --upgrade pip
+python3 -m pip install -r requirements.txt
 
-    # Optional: Create a launcher script
-    echo -e "#!/bin/fish\nsource $HOME/Applications/RVC-GUI/venv/bin/activate\npython rvcgui.py" > "$HOME/Applications/RVC-GUI/start.sh"
-    chmod +x "$HOME/Applications/RVC-GUI/start.sh"
+# Optional: Create a launcher script
+echo -e "#!/bin/fish\nsource $HOME/Applications/RVC-GUI/venv/bin/activate\npython rvcgui.py" > "$HOME/Applications/RVC-GUI/start.sh"
+chmod +x "$HOME/Applications/RVC-GUI/start.sh"
 
-    deactivate
-else
-    echo "❌ RVC-GUI archive not found: $RVC_GUI_ARCHIVE"
-fi
+deactivate
 
 echo "🧷 Creating application launcher entries and installing icons..."
 
-LAUNCHER_DIR="$HOME/.local/share/applications"
-ICON_DIR="$HOME/.local/share/icons"
+set LAUNCHER_DIR "$HOME/.local/share/applications"
+set ICON_DIR "$HOME/.local/share/icons"
 
 mkdir -p "$LAUNCHER_DIR" "$ICON_DIR"
 
 # RVC WebUI
-cp "$INSTALL_DIR/icons/rvc-webui.png" "$ICON_DIR/" 2>/dev/null || echo "⚠️ No icon found for RVC WebUI."
-cat <<EOF > "$LAUNCHER_DIR/rvc-webui.desktop"
-[Desktop Entry]
+cp "$INSTALL_DIR/icons/rvc-webui.png" "$ICON_DIR/" ^/dev/null || echo "⚠️ No icon found for RVC WebUI."
+echo "[Desktop Entry]
 Name=RVC WebUI
 Exec=$HOME/Applications/RVC-WebUI/start.sh
 Path=$HOME/Applications/RVC-WebUI
 Terminal=false
 Type=Application
 Icon=$ICON_DIR/rvc-webui.png
-Categories=AudioVideo;
-EOF
+Categories=AudioVideo;" > "$LAUNCHER_DIR/rvc-webui.desktop"
 
 # RVC-GUI
-cp "$INSTALL_DIR/icons/rvc-gui.png" "$ICON_DIR/" 2>/dev/null || echo "⚠️ No icon found for RVC-GUI."
-cat <<EOF > "$LAUNCHER_DIR/rvc-gui.desktop"
-[Desktop Entry]
+cp "$INSTALL_DIR/icons/rvc-gui.png" "$ICON_DIR/" ^/dev/null || echo "⚠️ No icon found for RVC-GUI."
+echo "[Desktop Entry]
 Name=RVC-GUI
 Exec=$HOME/Applications/RVC-GUI/start.sh
 Path=$HOME/Applications/RVC-GUI
 Terminal=false
 Type=Application
 Icon=$ICON_DIR/rvc-gui.png
-Categories=AudioVideo;
-EOF
+Categories=AudioVideo;" > "$LAUNCHER_DIR/rvc-gui.desktop"
 
 # Refresh desktop entries
 update-desktop-database "$LAUNCHER_DIR"
