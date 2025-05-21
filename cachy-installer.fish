@@ -46,10 +46,54 @@ echo "Please open http://localhost:8384 to link your Steam Deck device."
 sleep 2
 
 clear
+echo "📦 Installing VTube Studio with Proton-GE..."
+
+# 1. Create directories
+cd ~
+mkdir -p ~/.proton-ge 
+mkdir -p ~/.vtubestudio-proton 
+mkdir -p ~/Games/VTubeStudio
+
+# 2. Download and extract latest Proton-GE (edit version as needed)
+echo "📥 Downloading Proton-GE..."
+curl -L -o /tmp/Proton-GE.tar.gz https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-27/GE-Proton8-27.tar.gz
+tar -xf /tmp/Proton-GE.tar.gz -C ~/.proton-ge
+rm /tmp/Proton-GE.tar.gz
+
+# 3. Prompt user to copy their VTube Studio files
+echo "📁 Please copy your VTube Studio Windows files to: ~/Games/VTubeStudio"
+echo "Waiting for confirmation to continue..."
+read -p "Press enter once VTubeStudio.exe is inside ~/Games/VTubeStudio..."
+
+# 4. Create launcher script
+cat << 'EOF' > ~/Games/run-vtubestudio.sh
+#!/bin/fish
+export STEAM_COMPAT_DATA_PATH="$HOME/.vtubestudio-proton"
+"$HOME/.proton-ge/GE-Proton8-27/proton" run "$HOME/Games/VTubeStudio/VTubeStudio.exe"
+EOF
+
+chmod +x ~/Games/run-vtubestudio.sh
+
+# 5. Create .desktop entry
+mkdir -p ~/.local/share/applications
+cat << EOF > ~/.local/share/applications/vtubestudio.desktop
+[Desktop Entry]
+Name=VTube Studio
+Exec=$HOME/Games/run-vtubestudio.sh
+Type=Application
+Comment=Run VTube Studio standalone with Proton-GE
+Icon=face-smile
+Categories=Graphics;
+Terminal=false
+EOF
+
+echo "✅ VTube Studio setup complete. It will appear in your application launcher."
+sleep 2
+
+clear
 echo "🔧 Starting setup for Deep-Live-Cam, RVC WebUI, and RVC-GUI..."
 
 INSTALL_DIR="$HOME/Downloads/CachyInstallScript"
-DEEP_LIVE_CAM_ARCHIVE="$INSTALL_DIR/Deep-Live-Cam.tar.bz2"
 RVC_WEBUI_ARCHIVE="$INSTALL_DIR/RVC-WebUI.tar.gz"
 RVC_GUI_ARCHIVE="$INSTALL_DIR/RVC-GUI.tar.gz"
 
@@ -60,32 +104,11 @@ if [ ! -d "$INSTALL_DIR" ]; then
 fi
 
 # Create target directories
-mkdir -p "$HOME/Applications/Deep-Live-Cam"
 mkdir -p "$HOME/Applications/RVC-WebUI"
 mkdir -p "$HOME/Applications/RVC-GUI"
 
-# 1. Setup Deep-Live-Cam
-echo "📦 Setting up Deep-Live-Cam..."
-if [ -f "$DEEP_LIVE_CAM_ARCHIVE" ]; then
-    tar -xjf "$DEEP_LIVE_CAM_ARCHIVE" -C "$HOME/Applications/Deep-Live-Cam" --strip-components=1
-    cd "$HOME/Applications/Deep-Live-Cam" || exit
 
-    # Install Python dependencies
-    python3 -m venv venv
-    source venv/bin/activate
-    pip install --upgrade pip
-    pip install -r requirements.txt
-
-    # Optional: Create a launcher script
-    echo -e "#!/bin/fish\nsource $HOME/Applications/Deep-Live-Cam/venv/bin/activate\npython run.py" > "$HOME/Applications/Deep-Live-Cam/start.sh"
-    chmod +x "$HOME/Applications/Deep-Live-Cam/start.sh"
-
-    deactivate
-else
-    echo "❌ Deep-Live-Cam archive not found: $DEEP_LIVE_CAM_ARCHIVE"
-fi
-
-# 2. Setup RVC WebUI
+# 1. Setup RVC WebUI
 echo "📦 Setting up RVC WebUI..."
 if [ -f "$RVC_WEBUI_ARCHIVE" ]; then
     tar -xzf "$RVC_WEBUI_ARCHIVE" -C "$HOME/Applications/RVC-WebUI" --strip-components=1
@@ -106,7 +129,7 @@ else
     echo "❌ RVC WebUI archive not found: $RVC_WEBUI_ARCHIVE"
 fi
 
-# 3. Setup RVC-GUI
+# 2. Setup RVC-GUI
 echo "📦 Setting up RVC-GUI..."
 if [ -f "$RVC_GUI_ARCHIVE" ]; then
     tar -xzf "$RVC_GUI_ARCHIVE" -C "$HOME/Applications/RVC-GUI" --strip-components=1
@@ -133,19 +156,6 @@ LAUNCHER_DIR="$HOME/.local/share/applications"
 ICON_DIR="$HOME/.local/share/icons"
 
 mkdir -p "$LAUNCHER_DIR" "$ICON_DIR"
-
-# Deep-Live-Cam
-cp "$INSTALL_DIR/icons/deep-live-cam.png" "$ICON_DIR/" 2>/dev/null || echo "⚠️ No icon found for Deep-Live-Cam."
-cat <<EOF > "$LAUNCHER_DIR/deep-live-cam.desktop"
-[Desktop Entry]
-Name=Deep-Live-Cam
-Exec=$HOME/Applications/Deep-Live-Cam/start.sh
-Path=$HOME/Applications/Deep-Live-Cam
-Terminal=false
-Type=Application
-Icon=$ICON_DIR/deep-live-cam.png
-Categories=Utility;
-EOF
 
 # RVC WebUI
 cp "$INSTALL_DIR/icons/rvc-webui.png" "$ICON_DIR/" 2>/dev/null || echo "⚠️ No icon found for RVC WebUI."
@@ -188,6 +198,7 @@ echo "Aliases 'cleanup', 'update' and 'debloat' added to Fish shell."
 sleep 2
 
 clear
+cd ~
 echo "Removing unwanted packages..."
 sudo pacman -R alacritty micro cachyos-micro-settings haruna meld
 cleanup
@@ -203,6 +214,8 @@ echo "
 2. Watch this video (https://www.youtube.com/watch?v=Oqla04P_2QA) to see the process for getting dad's HP Reverb working since 24H2 doesn't work with WMR anymore.
 
 3. Open http://localhost:8384 for Syncthing to link your Steam Deck folders to your PC for emulation save files.
+
+4. Download this file (https://cdn.discordapp.com/attachments/1267198348415471698/1309301528124719124/RVC-SVC-Best-Dataset-Maker-main.zip?ex=682f0c51&is=682dbad1&hm=4bfdc3a2cf83acd83566624262c98997b3470faf5b8c124981841a71ef4c0fd7&) and run pyinstaller to convert it to the right executable for your system.
 
 " > checklist.txt
 cd ~
