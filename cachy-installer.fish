@@ -28,7 +28,7 @@ sleep 2
 
 clear
 echo "📦 Installing essential software..."
-sudo pacman -S --noconfirm steam wine wine-gecko wine-mono obs-studio gimp flatpak discover cmake make dkms git vscode audacity vlc syncthing python3 cuda
+sudo pacman -S --noconfirm steam wine wine-gecko wine-mono obs-studio gimp flatpak discover cmake make dkms git vscode audacity vlc syncthing python3
 
 echo "🔗 Enabling Flathub..."
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
