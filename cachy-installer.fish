@@ -121,11 +121,6 @@ source venv/bin/activate
 python3 -m ensurepip --upgrade
 python3 -m pip install --upgrade pip
 python3 -m pip install -r requirements.txt
-
-# Optional: Create a launcher script
-echo -e "#!/bin/fish\nsource $HOME/Applications/RVC-WebUI/venv/bin/activate\npython infer-web.py" > "$HOME/Applications/RVC-WebUI/start.sh"
-chmod +x "$HOME/Applications/RVC-WebUI/start.sh"
-
 deactivate
 
 # 2. Setup RVC-GUI
@@ -138,46 +133,8 @@ python3 -m venv venv
 source venv/bin/activate
 python3 -m pip install --upgrade pip
 python3 -m pip install -r requirements.txt
-
-# Optional: Create a launcher script
-echo -e "#!/bin/fish\nsource $HOME/Applications/RVC-GUI/venv/bin/activate\npython rvcgui.py" > "$HOME/Applications/RVC-GUI/start.sh"
-chmod +x "$HOME/Applications/RVC-GUI/start.sh"
-
 deactivate
 
-echo "🧷 Creating application launcher entries and installing icons..."
-
-set LAUNCHER_DIR "$HOME/.local/share/applications"
-set ICON_DIR "$HOME/.local/share/icons"
-
-mkdir -p "$LAUNCHER_DIR" "$ICON_DIR"
-
-# RVC WebUI
-cp "$INSTALL_DIR/icons/rvc-webui.png" "$ICON_DIR/" ^/dev/null || echo "⚠️ No icon found for RVC WebUI."
-echo "[Desktop Entry]
-Name=RVC WebUI
-Exec=$HOME/Applications/RVC-WebUI/start.sh
-Path=$HOME/Applications/RVC-WebUI
-Terminal=false
-Type=Application
-Icon=$ICON_DIR/rvc-webui.png
-Categories=AudioVideo;" > "$LAUNCHER_DIR/rvc-webui.desktop"
-
-# RVC-GUI
-cp "$INSTALL_DIR/icons/rvc-gui.png" "$ICON_DIR/" ^/dev/null || echo "⚠️ No icon found for RVC-GUI."
-echo "[Desktop Entry]
-Name=RVC-GUI
-Exec=$HOME/Applications/RVC-GUI/start.sh
-Path=$HOME/Applications/RVC-GUI
-Terminal=false
-Type=Application
-Icon=$ICON_DIR/rvc-gui.png
-Categories=AudioVideo;" > "$LAUNCHER_DIR/rvc-gui.desktop"
-
-# Refresh desktop entries
-update-desktop-database "$LAUNCHER_DIR"
-
-echo "✅ Menu entries created. Look for them in the Application Launcher."
 sleep 2
 
 clear
@@ -191,7 +148,7 @@ sleep 2
 clear
 cd ~
 echo "Removing unwanted packages..."
-sudo pacman -R alacritty micro cachyos-micro-settings haruna meld
+sudo pacman -R alacritty micro cachyos-micro-settings haruna meld btop
 cleanup
 sleep 2
 
@@ -208,6 +165,11 @@ echo "
 
 4. Download this file (https://cdn.discordapp.com/attachments/1267198348415471698/1309301528124719124/RVC-SVC-Best-Dataset-Maker-main.zip?ex=682f0c51&is=682dbad1&hm=4bfdc3a2cf83acd83566624262c98997b3470faf5b8c124981841a71ef4c0fd7&) and run pyinstaller to convert it to the right executable for your system.
 
+5. Get in a call with Gangsta and ask him to walk you through building the RVC tools.
+
+6. Rice the shit out of your system until you're happy with how it works (mainly clear out unwanted entries from the application launcher and change names of things from EmuDeck) and find a really nice background.
+
+7 . Enjoy your new system.
 " > checklist.txt
 cd ~
 sleep 1
