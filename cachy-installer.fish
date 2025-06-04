@@ -37,7 +37,7 @@ echo "🔑 Adding Firefox Nightly key..."
 gpg --keyserver hkps://keys.openpgp.org --recv-keys 14F26682D0916CDD81E37B6D61B7B526D98F0353
 
 echo "⬇️ Installing AUR apps..."
-paru -S --noconfirm firefox-nightly-bin minecraft-launcher jre17-openjdk lutris discord spotify streamdeck-ui oversteer winegui hid-tmff2-dkms-git ncdu emudeck-bin
+paru -S --noconfirm firefox-nightly-bin minecraft-launcher jre17-openjdk lutris discord spotify streamdeck-ui oversteer winegui kwin-effect-rounded-corners-git hid-tmff2-dkms-git ncdu emudeck-bin
 cd ~/Downloads && git clone https://github.com/b1k/b3DS
 cd ~
 
@@ -159,20 +159,30 @@ echo "✅ Automated post-install script completed."
 sleep 1
 cd ~/Desktop/ && touch checklist.txt
 echo "
-1. Run sudo nano /usr/share/cachyos-fish-config/cachyos-config.fish (open this in a new terminal window) and look for any lines mentioning fastfetch then remove them to prevent fastfetch running every time you open the terminal.
+FINISHING STEPS FOR MAIN PART OF INSTALL
+- Run sudo nano /usr/share/cachyos-fish-config/cachyos-config.fish (open this in a new terminal window) and look for any lines mentioning fastfetch then remove them to prevent fastfetch running every time you open the terminal.
 
-2. Watch this video (https://www.youtube.com/watch?v=Oqla04P_2QA) to see the process for getting dad's HP Reverb working since 24H2 doesn't work with WMR anymore.
+- Watch this video (https://www.youtube.com/watch?v=Oqla04P_2QA) to see the process for getting dad's HP Reverb working since 24H2 doesn't work with WMR anymore.
 
-3. Open http://localhost:8384 for Syncthing to link your Steam Deck folders to your PC for emulation save files.
+- Open http://localhost:8384 for Syncthing to link your Steam Deck folders to your PC for emulation save files.
 
-4. Download this file (https://cdn.discordapp.com/attachments/1267198348415471698/1309301528124719124/RVC-SVC-Best-Dataset-Maker-main.zip?ex=682f0c51&is=682dbad1&hm=4bfdc3a2cf83acd83566624262c98997b3470faf5b8c124981841a71ef4c0fd7&) and run pyinstaller to convert it to the right executable for your system.
+- Download this file (https://cdn.discordapp.com/attachments/1267198348415471698/1309301528124719124/RVC-SVC-Best-Dataset-Maker-main.zip?ex=682f0c51&is=682dbad1&hm=4bfdc3a2cf83acd83566624262c98997b3470faf5b8c124981841a71ef4c0fd7&) and run pyinstaller to convert it to the right executable for your system.
 
-5. Get in a call with Gangsta and ask him to walk you through building the RVC tools.
+- Get in a call with Gangsta and ask him to walk you through building the RVC tools.
+-----------------------------------------
 
-6. Rice the shit out of your system until you're happy with how it looks (mainly clear out unwanted entries from the application launcher and change names of things from EmuDeck) and find a really nice background.
+RICING
+- Rice the shit out of your system until you're happy with how it looks (mainly clear out unwanted entries from the application launcher and change names of things from EmuDeck) and find a really nice background.
 
-7. Add this to Dolphin so you can hide stuff you don't want visible - https://store.kde.org/p/1172761/
+- Add this extension to Dolphin so you can hide stuff you don't want visible - (https://store.kde.org/p/1172761/)
 
+- Search for "KDE Control Center" in Widgets and put it next to the clock for a quick control thing that looks really nice - hide the other icons in the system tray and just have that
+
+- CachyOS Nord (global system theme), Sweet (colours, blue accent), Win11-dark (icons), Capitaine (cursors)
+
+- Disable Spotify notifications (done in Spotify) so you don't get notified any time a new song comes on
+
+- Open Settings and search for "Desktop Effects", then search "round" to disable Background Contrast (makes the taskbar translucent) and edit Rounded Corners to disable the outline around windows.
 -----
 Enjoy your new system :)
 
