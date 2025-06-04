@@ -37,7 +37,8 @@ echo "🔑 Adding Firefox Nightly key..."
 gpg --keyserver hkps://keys.openpgp.org --recv-keys 14F26682D0916CDD81E37B6D61B7B526D98F0353
 
 echo "⬇️ Installing AUR apps..."
-paru -S --noconfirm firefox-nightly-bin minecraft-launcher jre17-openjdk lutris discord spotify streamdeck-ui oversteer winegui kwin-effect-rounded-corners-git hid-tmff2-dkms-git ncdu emudeck-bin
+paru -S --noconfirm firefox-nightly-bin minecraft-launcher jre17-openjdk lutris spotify streamdeck-ui oversteer winegui kwin-effect-rounded-corners-git hid-tmff2-dkms-git ncdu emudeck-bin
+flatpak install flathub com.discordapp.Discord
 cd ~/Downloads && git clone https://github.com/b1k/b3DS
 cd ~
 
@@ -54,7 +55,7 @@ echo "📦 Installing VTube Studio with Proton-GE..."
 cd ~
 mkdir -p ~/.proton-ge
 mkdir -p ~/.vtubestudio-proton
-mkdir -p ~/Games/VTubeStudio
+mkdir -p ~/.Games/VTubeStudio
 
 # 2. Download and extract latest Proton-GE (edit version as needed)
 echo "📥 Downloading Proton-GE..."
@@ -73,14 +74,14 @@ set FILE "$LAUNCHER_DIR/vtubestudio.desktop"
 
 echo '[Desktop Entry]
 Name=VTube Studio
-Exec=$HOME/Games/run-vtubestudio.sh
-Path=$HOME/Games/VTubeStudio
+Exec=$HOME/.Games/run-vtubestudio.sh
+Path=$HOME/.Games/VTubeStudio
 Terminal=false
 Type=Application
 Icon=$HOME/Icons/vtubestudio.png
 Categories=AudioVideo;' > $FILE
 
-chmod +x ~/Games/run-vtubestudio.sh
+chmod +x ~/.Games/run-vtubestudio.sh
 
 # 5. Create .desktop entry
 set LAUNCHER_DIR "$HOME/.local/share/applications"
@@ -90,9 +91,9 @@ set FILE "$LAUNCHER_DIR/vtubestudio.desktop"
 
 echo '[Desktop Entry]
 Name=VTube Studio
-Exec='$HOME'/Games/run-vtubestudio.sh
+Exec='$HOME'/.Games/run-vtubestudio.sh
 Type=Application
-Comment=Run VTube Studio standalone with Proton-GE
+Comment=
 Icon=face-smile
 Categories=Graphics;
 Terminal=false' > $FILE
@@ -108,14 +109,14 @@ set RVC_WEBUI_ARCHIVE "$INSTALL_DIR/RVC-WebUI.tar.gz"
 set RVC_GUI_ARCHIVE "$INSTALL_DIR/RVC-GUI.tar.gz"
 
 # Create target directories
-mkdir -p "$HOME/Applications/RVC-WebUI"
-mkdir -p "$HOME/Applications/RVC-GUI"
+mkdir -p "$HOME/.Applications/RVC-WebUI"
+mkdir -p "$HOME/.Applications/RVC-GUI"
 
 
 # 1. Setup RVC WebUI
 echo "📦 Setting up RVC WebUI..."
-tar -xzf "$RVC_WEBUI_ARCHIVE" -C "$HOME/Applications/RVC-WebUI" --strip-components=1
-cd "$HOME/Applications/RVC-WebUI" || exit
+tar -xzf "$RVC_WEBUI_ARCHIVE" -C "$HOME/.Applications/RVC-WebUI" --strip-components=1
+cd "$HOME/.Applications/RVC-WebUI" || exit
 
 # Install Python dependencies
 python3 -m venv venv
@@ -127,8 +128,8 @@ deactivate
 
 # 2. Setup RVC-GUI
 echo "📦 Setting up RVC-GUI..."
-tar -xzf "$RVC_GUI_ARCHIVE" -C "$HOME/Applications/RVC-GUI" --strip-components=1
-cd "$HOME/Applications/RVC-GUI" || exit
+tar -xzf "$RVC_GUI_ARCHIVE" -C "$HOME/.Applications/RVC-GUI" --strip-components=1
+cd "$HOME/.Applications/RVC-GUI" || exit
 
 # Install Python dependencies
 python3 -m venv venv
@@ -173,8 +174,6 @@ FINISHING STEPS FOR MAIN PART OF INSTALL
 
 RICING
 - Rice the shit out of your system until you're happy with how it looks (mainly clear out unwanted entries from the application launcher and change names of things from EmuDeck) and find a really nice background.
-
-- Add this extension to Dolphin so you can hide stuff you don't want visible - (https://store.kde.org/p/1172761/)
 
 - Search for "KDE Control Center" in Widgets and put it next to the clock for a quick control thing that looks really nice - hide the other icons in the system tray and just have that
 
