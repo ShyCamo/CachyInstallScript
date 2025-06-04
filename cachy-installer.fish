@@ -37,7 +37,7 @@ echo "🔑 Adding Firefox Nightly key..."
 gpg --keyserver hkps://keys.openpgp.org --recv-keys 14F26682D0916CDD81E37B6D61B7B526D98F0353
 
 echo "⬇️ Installing AUR apps..."
-paru -S --noconfirm firefox-nightly-bin minecraft-launcher jre17-openjdk lutris ryujinx discord spotify streamdeck-ui oversteer winegui azahar-appimage hid-tmff2-dkms-git ncdu
+paru -S --noconfirm firefox-nightly-bin minecraft-launcher jre17-openjdk lutris discord spotify streamdeck-ui oversteer winegui hid-tmff2-dkms-git ncdu emudeck-bin
 
 echo "🔄 Setting up Syncthing..."
 systemctl --user enable syncthing
