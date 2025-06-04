@@ -169,9 +169,13 @@ echo "
 
 5. Get in a call with Gangsta and ask him to walk you through building the RVC tools.
 
-6. Rice the shit out of your system until you're happy with how it works (mainly clear out unwanted entries from the application launcher and change names of things from EmuDeck) and find a really nice background.
+6. Rice the shit out of your system until you're happy with how it looks (mainly clear out unwanted entries from the application launcher and change names of things from EmuDeck) and find a really nice background.
 
-7 . Enjoy your new system.
+7. Add this to Dolphin so you can hide stuff you don't want visible - https://store.kde.org/p/1172761/
+
+-----
+Enjoy your new system :)
+
 " > checklist.txt
 cd ~
 sleep 1
