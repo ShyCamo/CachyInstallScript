@@ -38,11 +38,13 @@ gpg --keyserver hkps://keys.openpgp.org --recv-keys 14F26682D0916CDD81E37B6D61B7
 
 echo "⬇️ Installing AUR apps..."
 paru -S --noconfirm firefox-nightly-bin minecraft-launcher jre17-openjdk lutris discord spotify streamdeck-ui oversteer winegui hid-tmff2-dkms-git ncdu emudeck-bin
+cd ~/Downloads && git clone https://github.com/b1k/b3DS
+cd ~
 
 echo "🔄 Setting up Syncthing..."
 systemctl --user enable syncthing
 systemctl --user start syncthing
-echo "Please open http://localhost:8384 to link your Steam Deck device."
+echo "Please open http://localhost:8384 to link your Steam Deck."
 sleep 2
 
 clear
